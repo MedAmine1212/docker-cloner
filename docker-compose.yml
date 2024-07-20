@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15.3
+    container_name: odoo-DB
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    networks:
+      - odoo-network
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  webstudio:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: webstudio
+    environment:
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@odoo-DB:5432/${POSTGRES_DB}
+    depends_on:
+      - postgres
+    networks:
+      - odoo-network
+    ports:
+      - "5173:5173"
+
+networks:
+  odoo-network:
+
+volumes:
+  pg-data:
