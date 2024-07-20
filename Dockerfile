@@ -25,6 +25,9 @@ RUN npm install -g pnpm@9.0.2
 # Modify vite.config.ts to bind to 0.0.0.0
 RUN sed -i 's/host: true/host: "0.0.0.0"/' /app/webstudio/apps/builder/vite.config.ts
 
+# Modify the AUTH_SECRET in the .env file
+RUN sed -i 's/^AUTH_SECRET=.*/AUTH_SECRET=6364b7130763c7fa415ad6d0c38b688185f468dcc172b93f69108eec60fd5a37/' /app/webstudio/apps/builder/.env
+
 # Install dependencies using pnpm
 RUN pnpm install --frozen-lockfile
 
