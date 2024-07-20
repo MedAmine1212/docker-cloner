@@ -21,5 +21,10 @@ docker exec -it webstudio sh
 
 ### Running the app
 
-The app will be running on: [http://localhost:5173/](http://localhost:5173/)
-And Auth secret will be : 6364
+```sh
+[http://localhost:5173/](http://localhost:5173/)
+```
+### Auth secret will be
+```sh
+6364
+```
